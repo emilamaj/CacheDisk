@@ -1,9 +1,10 @@
 """
 A module to easily cache sync/async functions to memory or disk.
 Includes decorators for caching functionality, supporting both synchronous and asynchronous calls.
+The cache can be configured to use either JSON or Pickle format for disk storage.
+The cache can be pruned to remove infrequently used keys.
 """
 
-import asyncio
 import os
 import json
 import pickle
@@ -72,8 +73,8 @@ class CacheDisk:
             if func_name in cls.PENDING_KEYS:
                 CacheDiskFileManager.save_cache(func_name, cache)
                 cls.PENDING_KEYS.remove(func_name)
-    
-    @classmethod  
+
+    @classmethod
     def sync_disk_cache(cls, factor=0.33, delay=120, cache_none=False):
         """Decorator for caching sync functions to the disk."""
         def decorator(func):
