@@ -14,7 +14,7 @@ setup(
     long_description=open('readme.md').read(),
     long_description_content_type='text/markdown',
     keywords="cache caching disk cache-disk database key-value",
-    url="http://example.com/CacheDisk",   # Project home page
+    url="https://github.com/emilamaj/CacheDisk",   # Project home page
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
