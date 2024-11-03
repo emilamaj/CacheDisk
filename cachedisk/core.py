@@ -10,6 +10,7 @@ import json
 import pickle
 import time
 from functools import wraps
+import hashlib
 
 class CacheDiskConfig:
     """Configuration settings for the cache."""
@@ -66,6 +67,13 @@ class CacheDisk:
             return all(x is None for x in result)
         return False
 
+    @staticmethod
+    def _make_key(args, kwargs):
+        """Creates a unique key from both positional and keyword arguments."""
+        # Always create a hash of the pickled data to handle any type of arguments
+        pickled = pickle.dumps((args, sorted(kwargs.items())))
+        return hashlib.sha256(pickled).hexdigest()
+
     @classmethod
     def commit(cls):
         """Saves all pending changes to the disk."""
@@ -86,7 +94,7 @@ class CacheDisk:
             @wraps(func)
             def wrapper(*args, **kwargs):
                 nonlocal last_len, last_write
-                key = args
+                key = cls._make_key(args, kwargs)
                 if key in cache:
                     result = cache[key]
                     if not cls.is_null_result(result) or cache_none:
@@ -135,7 +143,7 @@ class CacheDisk:
             @wraps(func)
             async def wrapper(*args, **kwargs):
                 nonlocal last_len, last_write
-                key = args
+                key = cls._make_key(args, kwargs)
 
                 if key in cache:
                     result = cache[key]
