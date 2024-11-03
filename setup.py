@@ -2,11 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="CacheDisk",
-    version="0.1",
+    version="0.4",
     packages=find_packages(),
-    install_requires=[
-        'pickle',
-    ],
+    install_requires=[],
     python_requires='>=3.6',
     # PyPI metadata
     author="Emile Amajar",
