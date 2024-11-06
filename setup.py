@@ -1,18 +1,37 @@
 from setuptools import setup, find_packages
 
+# Read version from __init__.py
+with open('cachedisk/__init__.py', 'r') as f:
+    for line in f:
+        if line.startswith('__version__'):
+            version = line.split('=')[1].strip().strip('"').strip("'")
+            break
+
+# Read README.md with error handling
+try:
+    with open('README.md', 'r', encoding='utf-8') as f:
+        long_description = f.read()
+except FileNotFoundError:
+    try:
+        with open('readme.md', 'r', encoding='utf-8') as f:
+            long_description = f.read()
+    except FileNotFoundError:
+        long_description = """A lightweight in-memory caching library with disk persistence. 
+        Supports both sync and async functions."""
+
 setup(
-    name="CacheDisk",
-    version="0.4",
-    packages=find_packages(),
+    name="cachedisk",
+    version=version,
+    packages=find_packages(include=['cachedisk', 'cachedisk.*']),
     install_requires=[],
     python_requires='>=3.6',
     # PyPI metadata
     author="Emile Amajar",
     description="A lightweight in-memory caching library with disk persistence. Supports both sync and async functions.",
-    long_description=open('readme.md').read(),
+    long_description=long_description,
     long_description_content_type='text/markdown',
     keywords="cache caching disk cache-disk database key-value",
-    url="https://github.com/emilamaj/CacheDisk",   # Project home page
+    url="https://github.com/emilamaj/CacheDisk",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
